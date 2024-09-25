@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:weather_application/data/models/weather_model.dart';
 import 'package:weather_application/data/services/api_calling.dart';
+import 'package:weather_application/ui/widgets/todays_weather.dart';
+import 'package:weather_application/ui/widgets/weather_days.dart';
+import 'package:weather_application/ui/widgets/weather_hour.dart';
+
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -16,55 +20,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final ApiCalling _apiCalling = ApiCalling();
 
-
-  // search Dialog box
-  _showTextInputDialog(BuildContext context) async{
-    return showDialog(context: context, builder: (context){
-      return AlertDialog(
-        backgroundColor: Colors.teal[300],
-        title:const Center(child: Text(
-          "Search Location",
-          style: TextStyle(color:Colors.white),
-         ),
-        ),
-        content: TextField(
-          controller: _searchTextField,
-          style: const TextStyle(color:Colors.white),
-          decoration: const InputDecoration(
-            hintText: "City,Zip,Latitude and Longitude",
-            hintStyle: TextStyle(color:Colors.white,fontSize: 14.0),
-          ),
-        ),
-
-        actions: [
-          ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.teal,
-                  foregroundColor: Colors.white,
-              ),
-              onPressed: (){
-                Navigator.pop(context);
-              },
-              child:const Text("Cancel")
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.teal ,
-                foregroundColor: Colors.white,
-            ),
-            onPressed: (){
-              if(_searchTextField.text.isEmpty){
-                return;
-              }
-              Navigator.pop(context,_searchTextField.text);
-            },
-            child:const Text("Ok"),
-          ),
-        ],
-      );
-     },
-    );
-  }
 
 
   @override
@@ -116,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
 
                       const SizedBox(height: 10),
-                      WeatherByHours(weatherModel: weatherModel),
+                      WeatherHours(weatherModel: weatherModel),
 
                       const SizedBox(height: 10),
                       const Text(
@@ -128,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
 
                       const SizedBox(height: 10),
-                      WeatherByDays(weatherModel: weatherModel),
+                      WeatherDays(weatherModel: weatherModel),
                       const SizedBox(height: 10),
                     ],
                   ),
@@ -154,6 +109,55 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  // search Dialog box
+  _showTextInputDialog(BuildContext context) async{
+    return showDialog(context: context, builder: (context){
+      return AlertDialog(
+        backgroundColor: Colors.grey,
+        title:const Center(child: Text(
+          "Search Location",
+          style: TextStyle(color:Colors.white),
+        ),
+        ),
+        content: TextField(
+          controller: _searchTextField,
+          style: const TextStyle(color:Colors.white),
+          decoration: const InputDecoration(
+            hintText: "City,Zip,Latitude and Longitude",
+            hintStyle: TextStyle(color:Colors.white,fontSize: 14.0),
+          ),
+        ),
+
+        actions: [
+          ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blueGrey,
+                foregroundColor: Colors.white,
+              ),
+              onPressed: (){
+                Navigator.pop(context);
+              },
+              child:const Text("Cancel")
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.blueGrey ,
+              foregroundColor: Colors.white,
+            ),
+            onPressed: (){
+              if(_searchTextField.text.isEmpty){
+                return;
+              }
+              Navigator.pop(context,_searchTextField.text);
+            },
+            child:const Text("Ok"),
+          ),
+        ],
+      );
+    },
     );
   }
 }
