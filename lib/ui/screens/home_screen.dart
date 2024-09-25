@@ -52,11 +52,23 @@ class _HomeScreenState extends State<HomeScreen> {
           child: FutureBuilder(
             future: _apiCalling.getWeatherData(searchText),
             builder:(context, snapshot) {
-              if(snapshot.hasData){
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return Center(child: Text('Error: ${snapshot.error}'));
+              } else if (!snapshot.hasData ) {
+                return const Center(child: Text('No data found'));
+              } else {
                 WeatherModel? weatherModel = snapshot.data;
                 return SizedBox(
-                  height: MediaQuery.of(context).size.height,
-                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery
+                      .of(context)
+                      .size
+                      .height,
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width,
                   child: Column(
                     children: [
                       TodaysWeather(weatherModel: weatherModel),
@@ -65,8 +77,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       const Text(
                         "Weather By Hours",
                         style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.white,
+                          fontSize: 20,
+                          color: Colors.white,
                         ),
                       ),
 
@@ -77,8 +89,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       const Text(
                         "Next 7 Days Weather",
                         style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.white,
+                          fontSize: 20,
+                          color: Colors.white,
                         ),
                       ),
 
@@ -89,24 +101,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 );
               }
-              if(snapshot.hasError){
-                return const Center(
-                  child: Text(
-                    "Error has occurred.",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 15,
-                    ),
-                  ),
-                );
-              }
-
-              return const Center(
-                  child: CircularProgressIndicator(),
-              );
-
-            },
-          ),
+              },
+            ),
         ),
       ),
     );
